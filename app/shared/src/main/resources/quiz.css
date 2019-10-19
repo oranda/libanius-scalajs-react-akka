@@ -1,0 +1,125 @@
+
+        body {
+            color: white;
+            font-family: Verdana, Arial, 'sans-serif';
+            background-color: black;
+        }
+
+        .center {
+            text-align: center
+        }
+
+        #prompt-word {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #question-text {
+            font-size: 18px;
+        }
+
+        #score-text {
+            font-size: 14px;
+            color: #9999FF;
+            text-align: center
+        }
+
+        .status-text {
+            font-size: 14px;
+            text-align: center
+        }
+
+        #descriptive-text {
+            font-size: 10px;
+            color: #FFFFFF;
+            text-align: right
+        }
+
+        .response-choice-button {
+            font-size: 24px;
+            width: 550px;
+            height: 120px;
+            vertical-align: middle;
+        }
+
+        .response-choice-button.correct-response {
+            background-color: #00ff00;
+        }
+
+        .response-choice-button.incorrect-response {
+            background-color: #ff0000;
+        }
+
+        .prev-choice {
+            font-size: 14px;
+        }
+
+        .prev-choice.correct-response {
+            color: #00ff00;
+        }
+
+        .prev-choice.incorrect-response {
+            color: #ff0000;
+        }
+
+        #delete-button {
+            color: red;
+            font-size: 12px;
+            width: 75px;
+            height: 40px;
+        }
+
+        #header-wrapper {
+            width: 550px;
+            height: 24px;
+            display: table;
+            padding: 0;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .alignleft {
+            float: left;
+        }
+        .alignright {
+            float: right;
+        }
+
+        #footer-wrapper {
+            width: 550px;
+            height: 45px;
+            display: table;
+            padding: 0;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #other-quiz-groups-header {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .other-quiz-group-text {
+            font-size: 24px;
+            color: #0000FF;
+            text-decoration: underline;
+        }
+
+        #quiz-persistence-area {
+            width: 550px;
+            color: #888800;
+            display: table;
+            padding: 0;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #restore-data {
+            width: 200px;
+            float: left;
+        }
+
+        #save-data {
+            width: 200px;
+            float: right;
+        }

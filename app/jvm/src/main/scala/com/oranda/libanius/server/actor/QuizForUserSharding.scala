@@ -1,0 +1,38 @@
+package com.oranda.libanius.server.actor
+
+import akka.actor.{ActorRef, ActorSystem, Props}
+import akka.cluster.sharding.{ClusterSharding, ClusterShardingSettings, ShardRegion}
+
+import com.oranda.libanius.actor.QuizForUserActor
+import com.oranda.libanius.actor.QuizForUserActor.QuizCommand
+import com.oranda.libanius.model.Quiz
+import com.oranda.libanius.server.ConfExtra
+
+object QuizForUserSharding {
+
+  def startQuizForUserSharding(system: ActorSystem): ActorRef = {
+    ClusterSharding(system).start(
+      typeName = "QuizForUser",
+      entityProps = Props(new QuizForUserActor(Quiz.getDefaultQuiz)),
+      settings = ClusterShardingSettings(system),
+      extractEntityId = extractEntityId,
+      extractShardId = extractShardId
+    )
+  }
+
+  val extractEntityId: ShardRegion.ExtractEntityId = {
+    case qc: QuizCommand => (qc.userId.toString, qc)
+  }
+
+  // Assumes there are about 10 times more shards than the maximum planned amount of nodes
+  val extractShardId: ShardRegion.ExtractShardId = {
+
+    def computeShardId(entityId: ShardRegion.EntityId): ShardRegion.ShardId =
+      (math.abs(entityId.hashCode()) % ConfExtra.maxNumShards).toString
+
+    {
+      case quizCommand: QuizCommand => computeShardId(quizCommand.userId.toString)
+      case ShardRegion.StartEntity(id) => computeShardId(id)
+    }
+  }
+}

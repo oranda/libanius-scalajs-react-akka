@@ -1,0 +1,55 @@
+== 0.5 Oct 20 2019
+
+ * Manually forked libanius-scaljs-react. (It could have been a branch but a fork is a bit
+  more accessible and a bit less error-prone.) It progresses from the version number of the
+  original, but the functionality and version numbers may diverge.
+
+ * This fork uses Akka Cluster. Also, instead of the libanius library, it is built on the
+  libanius-akka library, which uses Akka Persistence.
+
+ * The main new classes are QuizUsersService, QuizUsersGateway, and QuizForUserSharding. The
+  last maintains the cluster of QuizForUserActor's.
+
+ * The feature whereby a user could save quiz data to local disk has been removed, at least
+  temporarily. Data is kept on the server in an event-sourcing journal.
+
+
+###################################################################################################
+ChangeLog for libanius-scalajs-react
+###################################################################################################
+
+== 0.4.2 Sep 28 2019
+
+ * Fixed bug where the Children's Quiz wouldn't load.
+
+
+== 0.4.1 July 8 2018
+
+ * Upgraded to Scala 2.12.6, scala-js 0.6.24, scalajs-react 1.2.1, and sbt 1.1.6.
+
+
+== 0.4 May 14 2016
+
+ * Allow the user to persist quiz data to his/her local computer.
+
+
+== 0.3.1 July 2 2015
+
+ * Display version number to help testing, and link to source code.
+
+
+== 0.3 June 22 2015
+
+ * Now has multiple quizzes. (In this client, only one quiz group is allowed per quiz at any one time.)
+
+
+== 0.2 May 13 2015
+
+ * Multiple simultaneous users now supported.
+
+ * Added DELETE item button and functionality.
+
+
+== 0.1 May 12 2015
+
+ * Multiple-choice functionality (QuizScreen). Only works for a single user and a single quiz group.
