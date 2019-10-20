@@ -73,7 +73,7 @@ object QuizUsersService extends AppDependencyAccess {
     // Refresh the availableQuizGroups in case another source has altered them.
     val availableQuizGroups: Set[QuizGroupHeader] = dataStore.findAvailableQuizGroups
     def makeQuizGroupKey(qgh: QuizGroupHeader) =
-      QuizGroupKey(qgh.promptType, qgh.responseType, qgh.quizGroupType.str)
+      QuizGroupKeyReact(qgh.promptType, qgh.responseType, qgh.quizGroupType.str)
     val quizGroupHeaders = availableQuizGroups.map(qgh => makeQuizGroupKey(qgh)).toSeq
     val appVersion = config.getString("appVersion")
     StaticDataToClient(appVersion, quizGroupHeaders)

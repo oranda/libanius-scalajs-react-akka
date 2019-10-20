@@ -18,14 +18,14 @@
 
 package com.oranda.libanius.scalajs
 
-import com.oranda.libanius.model.quizgroup.QuizGroupHeader
+import com.oranda.libanius.model.quizgroup.{QuizGroupKey, QuizGroupType}
 import com.oranda.libanius.model.quizitem.QuizItemViewWithChoices
 import upickle.default.{macroRW, ReadWriter => RW}
 
 abstract class DataToClient
 
 // Data that changes so infrequently it only needs to be sent on loading a new quiz
-case class StaticDataToClient(appVersion: String, quizGroupHeaders: Seq[QuizGroupKey])
+case class StaticDataToClient(appVersion: String, quizGroupHeaders: Seq[QuizGroupKeyReact])
   extends DataToClient
 
 object StaticDataToClient {
@@ -39,25 +39,34 @@ object NewQuizItemToClient {
   implicit def rw: RW[NewQuizItemToClient] = macroRW
 }
 
-case class QuizGroupKey(promptType: String, responseType: String, quizGroupType: String)
+case class QuizGroupKeyReact(promptType: String, responseType: String, quizGroupType: String)
 
-object QuizGroupKey {
-  implicit def rw: RW[QuizGroupKey] = macroRW
+object QuizGroupKeyReact {
+  implicit def rw: RW[QuizGroupKeyReact] = macroRW
 
-  def fromQgh(qgh: QuizGroupHeader) =
-    QuizGroupKey(qgh.promptType, qgh.responseType, qgh.quizGroupType.str)
+  def apply(qgKey: QuizGroupKey): QuizGroupKeyReact =
+    QuizGroupKeyReact(qgKey.promptType, qgKey.responseType, qgKey.quizGroupType.str)
+
+  def toQgKey(qgKeyReact: QuizGroupKeyReact) =
+    QuizGroupKey(
+      qgKeyReact.promptType,
+      qgKeyReact.responseType,
+      QuizGroupType.fromString(qgKeyReact.quizGroupType)
+    )
 }
 
 // Note: for promptResponseMap, ListMap does not work with upickle
 case class QuizItemReact(
   prompt: String,
   correctResponse: String,
-  promptType: String,
-  responseType: String,
+  quizGroupKey: QuizGroupKeyReact,
   numCorrectResponsesInARow: Int,
   promptResponseMap: Seq[(String, String)]
 ) {
   def allChoices: Iterable[String] = promptResponseMap.map { case (prompt, response) => prompt }
+
+  lazy val promptType = quizGroupKey.promptType
+  lazy val responseType = quizGroupKey.responseType
 }
 
 object QuizItemReact {
@@ -68,15 +77,14 @@ object QuizItemReact {
     QuizItemReact(
       qi.prompt,
       qi.correctResponse,
-      qi.promptType,
-      qi.responseType,
+      QuizGroupKeyReact(qi.quizGroupKey),
       qi.numCorrectResponsesInARow,
       qi.promptResponseMap)
 }
 
 abstract class RequestToServer
 
-case class LoadNewQuizRequest(qgKey: QuizGroupKey) extends RequestToServer
+case class LoadNewQuizRequest(qgKey: QuizGroupKeyReact) extends RequestToServer
 
 object LoadNewQuizRequest {
   implicit def rw: RW[LoadNewQuizRequest] = macroRW
@@ -85,8 +93,7 @@ object LoadNewQuizRequest {
 case class QuizItemAnswer(
   prompt: String,
   correctResponse: String,
-  promptType: String,
-  responseType: String,
+  quizGroupKey: QuizGroupKeyReact,
   choice: String
 ) {
   val isCorrect = correctResponse == choice
@@ -97,5 +104,5 @@ object QuizItemAnswer {
   implicit def rw: RW[QuizItemAnswer] = macroRW
   // Should be apply, but upickle complains.
   def construct(qi: QuizItemReact, choice: String): QuizItemAnswer =
-    QuizItemAnswer(qi.prompt, qi.correctResponse, qi.promptType, qi.responseType, choice)
+    QuizItemAnswer(qi.prompt, qi.correctResponse, qi.quizGroupKey, choice)
 }

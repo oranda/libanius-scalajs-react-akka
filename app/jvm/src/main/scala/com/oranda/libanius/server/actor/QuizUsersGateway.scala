@@ -6,7 +6,7 @@ import akka.util.Timeout
 import com.oranda.libanius.actor.QuizForUserActor._
 import com.oranda.libanius.actor.UserId
 import com.oranda.libanius.model.quizitem.QuizItemViewWithChoices
-import com.oranda.libanius.scalajs.{QuizGroupKey, QuizItemAnswer, QuizItemReact}
+import com.oranda.libanius.scalajs.{QuizGroupKeyReact, QuizItemAnswer, QuizItemReact}
 
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
@@ -29,27 +29,24 @@ class QuizUsersGateway(val system: ActorSystem) {
   def updateWithUserResponse(userId: UserId, qia: QuizItemAnswer): Future[Boolean] = {
     (quizForUserShardRegion ? UpdateWithUserResponse(
       userId,
+      QuizGroupKeyReact.toQgKey(qia.quizGroupKey),
       qia.prompt,
       qia.correctResponse,
-      qia.promptType,
-      qia.responseType,
       qia.isCorrect
     )).mapTo[Boolean]
   }
 
-  def activateQuizGroup(userId: UserId, qgKey: QuizGroupKey): Future[QuizGroupActivated] =
+  def activateQuizGroup(userId: UserId, qgKey: QuizGroupKeyReact): Future[QuizGroupActivated] =
     (quizForUserShardRegion ? ActivateQuizGroup(
       userId,
-      qgKey.promptType,
-      qgKey.responseType,
+      QuizGroupKeyReact.toQgKey(qgKey),
       singleGroupActiveMode = true
     )).mapTo[QuizGroupActivated]
 
   def removeQuizItem(userId: UserId, quizItemReact: QuizItemReact) = {
     (quizForUserShardRegion ? RemoveQuizItem(
       userId,
-      quizItemReact.promptType,
-      quizItemReact.responseType,
+      QuizGroupKeyReact.toQgKey(quizItemReact.quizGroupKey),
       quizItemReact.prompt,
       quizItemReact.correctResponse
     )).mapTo[QuizItemRemoved]

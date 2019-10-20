@@ -33,7 +33,7 @@ object QuizScreen {
 
   case class State(
       appVersion: String,
-      availableQuizGroups: Seq[QuizGroupKey] = Seq.empty,
+      availableQuizGroups: Seq[QuizGroupKeyReact] = Seq.empty,
       currentQuizItem: Option[QuizItemReact] = None,
       prevQuizItem: Option[QuizItemReact] = None,
       scoreText: String = "",
@@ -56,7 +56,7 @@ object QuizScreen {
   private[this] def newQuizStateFromStaticData(responseText: String): State = {
     val quizData = upickle.read[StaticDataToClient](responseText)
     val appVersion = quizData.appVersion
-    val availableQuizGroups: Seq[QuizGroupKey] = quizData.quizGroupHeaders
+    val availableQuizGroups: Seq[QuizGroupKeyReact] = quizData.quizGroupHeaders
     State(appVersion, availableQuizGroups, None, None, "0.0%")
   }
 
@@ -146,7 +146,7 @@ object QuizScreen {
       }
     }
 
-    private def loadNewQuiz(state: State, qgKey: QuizGroupKey) = Callback {
+    private def loadNewQuiz(state: State, qgKey: QuizGroupKeyReact) = Callback {
       val url = "/loadNewQuiz"
       val data = upickle.write(LoadNewQuizRequest(qgKey))
       Ajax.post(url, data).foreach { _ =>
