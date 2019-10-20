@@ -1,4 +1,11 @@
-== 0.5 Oct 20 2019
+== 0.5.1 Oct 20 2019
+
+ * Updated to use the latest libanius-akka library, i.e. version 0.3.1.
+
+ * Increased usage of QuizGroupKey more. New class: QuizGroupKeyReact, a client-side version.
+
+
+== 0.5 Oct 19 2019
 
  * Manually forked libanius-scaljs-react. (It could have been a branch but a fork is a bit
   more accessible and a bit less error-prone.) It progresses from the version number of the

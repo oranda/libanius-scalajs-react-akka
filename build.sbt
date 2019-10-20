@@ -63,7 +63,7 @@ lazy val appJS = app.js.settings(
 
 lazy val appJVM = app.jvm.settings(
 
-  version := "0.5",
+  version := "0.5.1",
 
   // JS files like app-fastopt.js and app-jsdeps.js need to be copied to the server
   (resources in Compile) += (fastOptJS in (appJS, Compile)).value.data,
