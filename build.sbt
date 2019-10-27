@@ -53,7 +53,9 @@ val app = crossProject(JSPlatform, JVMPlatform).settings(
     "com.typesafe.akka" %% "akka-stream" % "2.5.25",
     "com.typesafe.akka" %% "akka-persistence" % "2.5.25",
     "com.typesafe.akka" %% "akka-cluster-sharding" % "2.5.25",
-    "com.softwaremill.akka-http-session" %% "core" % "0.5.10"
+    "com.softwaremill.akka-http-session" %% "core" % "0.5.10",
+    "org.scalatest" %% "scalatest" % "3.0.8" % Test,
+    "com.typesafe.akka" %% "akka-testkit" % "2.5.25" % Test
   )
 )
 
@@ -75,5 +77,10 @@ lazy val appJVM = app.jvm.settings(
   // application.conf too must be in the classpath
   unmanagedResourceDirectories in Compile += baseDirectory(_ / "../jvm/src/main/resources").value,
 
+  // Use a different configuration for tests
+  javaOptions in Test += s"-Dconfig.file=${sourceDirectory.value}/test/resources/application-test.conf",
+
+  // We need to fork a JVM process when testing so the Java options above are applied
+  fork in Test := true
 
 ).enablePlugins(JavaAppPackaging)
