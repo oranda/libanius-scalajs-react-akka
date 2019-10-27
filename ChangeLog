@@ -1,3 +1,10 @@
+== 0.6 Oct 27 2019
+
+ * Updated to use the latest libanius-akka library, i.e. version 0.4.
+
+ * Added Akka TestKit tests.
+
+
 == 0.5.1 Oct 20 2019
 
  * Updated to use the latest libanius-akka library, i.e. version 0.3.1.
