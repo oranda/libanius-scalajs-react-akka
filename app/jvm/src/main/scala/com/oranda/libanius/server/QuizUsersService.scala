@@ -18,10 +18,9 @@
 
 package com.oranda.libanius.server
 
-import com.oranda.libanius.actor.QuizForUserActor.{QuizGroupActivated, QuizItemRemoved}
+import com.oranda.libanius.actor.QuizEvents._
 import com.oranda.libanius.actor.UserId
 import com.oranda.libanius.dependencies.AppDependencyAccess
-import com.oranda.libanius.model.Quiz
 import com.oranda.libanius.model.quizgroup.QuizGroupHeader
 import com.oranda.libanius.model.quizitem._
 import com.oranda.libanius.scalajs._

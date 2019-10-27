@@ -3,7 +3,8 @@ package com.oranda.libanius.server.actor
 import akka.actor.ActorSystem
 import akka.pattern.ask
 import akka.util.Timeout
-import com.oranda.libanius.actor.QuizForUserActor._
+import com.oranda.libanius.actor.QuizMessages._
+import com.oranda.libanius.actor.QuizEvents._
 import com.oranda.libanius.actor.UserId
 import com.oranda.libanius.model.Quiz
 import com.oranda.libanius.model.quizitem.QuizItemViewWithChoices

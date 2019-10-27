@@ -4,7 +4,8 @@ import java.util.UUID
 
 import akka.actor.{ActorSystem, Props}
 import akka.testkit.{ImplicitSender, TestKit}
-import com.oranda.libanius.actor.QuizForUserActor._
+import com.oranda.libanius.actor.QuizMessages._
+import com.oranda.libanius.actor.QuizEvents._
 import com.oranda.libanius.actor.{QuizForUserActor, UserId}
 import com.oranda.libanius.dependencies.AppDependencyAccess
 import com.oranda.libanius.model.{Correct, Incorrect, ItemNotFound, Quiz}
@@ -103,38 +104,3 @@ class QuizForUserShardingSpec extends TestKit(ActorSystem("libanius-test"))
     }
   }
 }
-
-
-  /*
-    def produceQuizItem(userId: UserId): Future[Option[QuizItemViewWithChoices]] =
-    (quizForUserShardRegion ? ProduceQuizItem(userId)).mapTo[Option[QuizItemViewWithChoices]]
-
-  def scoreSoFar(userId: UserId): Future[BigDecimal] =
-    (quizForUserShardRegion ? ScoreSoFar(userId)).mapTo[BigDecimal]
-
-  def updateWithUserResponse(userId: UserId, qia: QuizItemAnswer): Future[Boolean] = {
-    (quizForUserShardRegion ? UpdateWithUserResponse(
-      userId,
-      QuizGroupKeyReact.toQgKey(qia.quizGroupKey),
-      qia.prompt,
-      qia.correctResponse,
-      qia.isCorrect
-    )).mapTo[Boolean]
-  }
-
-  def activateQuizGroup(userId: UserId, qgKey: QuizGroupKeyReact): Future[QuizGroupActivated] =
-    (quizForUserShardRegion ? ActivateQuizGroup(
-      userId,
-      QuizGroupKeyReact.toQgKey(qgKey),
-      singleGroupActiveMode = true
-    )).mapTo[QuizGroupActivated]
-
-  def removeQuizItem(userId: UserId, quizItemReact: QuizItemReact) = {
-    (quizForUserShardRegion ? RemoveQuizItem(
-      userId,
-      QuizGroupKeyReact.toQgKey(quizItemReact.quizGroupKey),
-      quizItemReact.prompt,
-      quizItemReact.correctResponse
-    )).mapTo[QuizItemRemoved]
-  }
-   */
