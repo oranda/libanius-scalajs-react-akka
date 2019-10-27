@@ -10,10 +10,10 @@ import com.oranda.libanius.server.ConfExtra
 
 object QuizForUserSharding {
 
-  def startQuizForUserSharding(system: ActorSystem): ActorRef = {
+  def startQuizForUserSharding(system: ActorSystem, quiz: Quiz): ActorRef = {
     ClusterSharding(system).start(
       typeName = "QuizForUser",
-      entityProps = Props(new QuizForUserActor(Quiz.getDefaultQuiz)),
+      entityProps = Props(new QuizForUserActor(quiz)),
       settings = ClusterShardingSettings(system),
       extractEntityId = extractEntityId,
       extractShardId = extractShardId

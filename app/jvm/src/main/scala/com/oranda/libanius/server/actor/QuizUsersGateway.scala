@@ -5,6 +5,7 @@ import akka.pattern.ask
 import akka.util.Timeout
 import com.oranda.libanius.actor.QuizForUserActor._
 import com.oranda.libanius.actor.UserId
+import com.oranda.libanius.model.Quiz
 import com.oranda.libanius.model.quizitem.QuizItemViewWithChoices
 import com.oranda.libanius.scalajs.{QuizGroupKeyReact, QuizItemAnswer, QuizItemReact}
 
@@ -18,7 +19,8 @@ class QuizUsersGateway(val system: ActorSystem) {
   // The default timeout for ?.
   implicit val askTimeout = Timeout(30.seconds)
 
-  val quizForUserShardRegion = QuizForUserSharding.startQuizForUserSharding(system)
+  val quiz = Quiz.getDefaultQuiz
+  val quizForUserShardRegion = QuizForUserSharding.startQuizForUserSharding(system, quiz)
 
   def produceQuizItem(userId: UserId): Future[Option[QuizItemViewWithChoices]] =
     (quizForUserShardRegion ? ProduceQuizItem(userId)).mapTo[Option[QuizItemViewWithChoices]]
