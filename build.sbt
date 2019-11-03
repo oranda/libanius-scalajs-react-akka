@@ -5,7 +5,8 @@ import sbt.Keys._
 
 import sbtcrossproject.CrossPlugin.autoImport.crossProject
 
-name := "Libanius Scala.js/Akka front-end"
+organization := "com.github.oranda"
+name := "libanius-scalajs-react-akka"
 
 scalaJSStage in Global := FastOptStage
 
@@ -18,12 +19,12 @@ scalacOptions += "-Ylog-classpath"
 val app = crossProject(JSPlatform, JVMPlatform).settings(
   scalaVersion := "2.12.6",
 
-  unmanagedSourceDirectories in Compile +=
-    baseDirectory.value  / "shared" / "main" / "scala",
+  unmanagedSourceDirectories in Compile += baseDirectory.value  / "shared" / "main" / "scala",
 
   unmanagedBase := (baseDirectory(_ / "../shared/lib")).value,
 
   libraryDependencies ++= Seq(
+    "com.github.oranda" %% "libanius-akka" % "0.4",
     "com.lihaoyi" %%% "scalatags" % "0.6.7",
     "com.lihaoyi" %%% "utest" % "0.6.3",
     "com.lihaoyi" %%% "upickle" % "0.6.6"
@@ -46,10 +47,8 @@ val app = crossProject(JSPlatform, JVMPlatform).settings(
   skip in packageJSDependencies := false // creates app-jsdeps.js with the react JS lib inside
 ).jvmSettings(
   libraryDependencies ++= Seq(
-    //"com.typesafe" % "config" % "1.3.4",
     "com.typesafe.akka" %% "akka-actor" % "2.5.25",
     "com.typesafe.akka" %% "akka-http"   % "10.1.8",
-    //"com.typesafe.akka" %% "akka-persistence" % "2.5.25",
     "com.typesafe.akka" %% "akka-stream" % "2.5.25",
     "com.typesafe.akka" %% "akka-persistence" % "2.5.25",
     "com.typesafe.akka" %% "akka-cluster-sharding" % "2.5.25",
