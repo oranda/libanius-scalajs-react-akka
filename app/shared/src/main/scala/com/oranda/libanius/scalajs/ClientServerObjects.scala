@@ -19,7 +19,7 @@
 package com.oranda.libanius.scalajs
 
 import com.oranda.libanius.model.quizgroup.{QuizGroupKey, QuizGroupType}
-import com.oranda.libanius.model.quizitem.QuizItemViewWithChoices
+import com.oranda.libanius.model.quizitem.{QuizItemResponse, QuizItemViewWithChoices}
 import upickle.default.{macroRW, ReadWriter => RW}
 
 abstract class DataToClient
@@ -90,19 +90,18 @@ object LoadNewQuizRequest {
   implicit def rw: RW[LoadNewQuizRequest] = macroRW
 }
 
-case class QuizItemAnswer(
-  prompt: String,
-  correctResponse: String,
+case class QuizItemResponseReact(
   quizGroupKey: QuizGroupKeyReact,
-  choice: String
+  prompt: String,
+  response: String,
+  correctResponse: String
 ) {
-  val isCorrect = correctResponse == choice
+  lazy val isCorrect = response == correctResponse
 }
 
-object QuizItemAnswer {
-
-  implicit def rw: RW[QuizItemAnswer] = macroRW
+object QuizItemResponseReact {
+  implicit def rw: RW[QuizItemResponseReact] = macroRW
   // Should be apply, but upickle complains.
-  def construct(qi: QuizItemReact, choice: String): QuizItemAnswer =
-    QuizItemAnswer(qi.prompt, qi.correctResponse, qi.quizGroupKey, choice)
+  def construct(qi: QuizItemReact, choice: String): QuizItemResponseReact =
+    QuizItemResponseReact(qi.quizGroupKey, qi.prompt, choice, qi.correctResponse)
 }

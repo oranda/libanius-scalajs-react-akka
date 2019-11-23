@@ -41,8 +41,11 @@ class QuizUsersService(quizUsersGateway: QuizUsersGateway) extends AppDependency
   def removeQuizItem(userId: UserId, quizItemReact: QuizItemReact): Future[QuizItemRemoved] =
     quizUsersGateway.removeQuizItem(userId, quizItemReact)
 
-  def processUserResponse(userId: UserId, qia: QuizItemAnswer): Future[NewQuizItemToClient] = {
-    quizUsersGateway.updateWithUserResponse(userId, qia)
+  def processUserResponse(
+    userId: UserId,
+    qir: QuizItemResponseReact
+  ): Future[NewQuizItemToClient] = {
+    quizUsersGateway.updateWithUserResponse(userId, qir)
     findNextQuizItem(userId)
   }
 

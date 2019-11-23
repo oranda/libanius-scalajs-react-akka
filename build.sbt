@@ -24,7 +24,7 @@ val app = crossProject(JSPlatform, JVMPlatform).settings(
   unmanagedBase := (baseDirectory(_ / "../shared/lib")).value,
 
   libraryDependencies ++= Seq(
-    "com.github.oranda" %% "libanius-akka" % "0.4",
+    "com.github.oranda" %% "libanius-akka" % "0.4.2.2",
     "com.lihaoyi" %%% "scalatags" % "0.6.7",
     "com.lihaoyi" %%% "utest" % "0.6.3",
     "com.lihaoyi" %%% "upickle" % "0.6.6"

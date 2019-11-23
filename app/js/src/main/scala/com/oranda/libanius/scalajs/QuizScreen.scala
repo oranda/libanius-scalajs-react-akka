@@ -125,7 +125,7 @@ object QuizScreen {
     def submitResponse(state: State, choice: String, curQuizItem: QuizItemReact) = Callback {
       $.modState(_.copy(chosen = Option(choice))).runNow()
       val url = "/processUserResponse"
-      val response = QuizItemAnswer.construct(curQuizItem, choice)
+      val response = QuizItemResponseReact.construct(curQuizItem, choice)
       val data = upickle.write(response)
 
       val sleepMillis: Double = if (response.isCorrect) 200 else 1000

@@ -112,10 +112,10 @@ object Server extends HttpApp with AppDependencyAccess {
       path("processUserResponse") {
         onlyInSession { userId =>
           entity(as[String]) { e =>
-            val quizItemAnswer = upickle.read[QuizItemAnswer](e)
+            val quizItemResponse = upickle.read[QuizItemResponseReact](e)
             val userResponse = quizUsersService.processUserResponse(
               userId,
-              quizItemAnswer
+              quizItemResponse
             )
             onComplete(userResponse) {
               case Success(f) => complete(userResponse.map(upickle.write(_)))

@@ -7,8 +7,8 @@ import com.oranda.libanius.actor.QuizMessages._
 import com.oranda.libanius.actor.QuizEvents._
 import com.oranda.libanius.actor.UserId
 import com.oranda.libanius.model.Quiz
-import com.oranda.libanius.model.quizitem.QuizItemViewWithChoices
-import com.oranda.libanius.scalajs.{QuizGroupKeyReact, QuizItemAnswer, QuizItemReact}
+import com.oranda.libanius.model.quizitem.{QuizItemResponse, QuizItemViewWithChoices}
+import com.oranda.libanius.scalajs.{QuizGroupKeyReact, QuizItemReact, QuizItemResponseReact}
 
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
@@ -29,13 +29,14 @@ class QuizUsersGateway(val system: ActorSystem) {
   def scoreSoFar(userId: UserId): Future[BigDecimal] =
     (quizForUserShardRegion ? ScoreSoFar(userId)).mapTo[BigDecimal]
 
-  def updateWithUserResponse(userId: UserId, qia: QuizItemAnswer): Future[Boolean] = {
+  def updateWithUserResponse(
+    userId: UserId,
+    qir: QuizItemResponseReact
+  ): Future[Boolean] = {
     (quizForUserShardRegion ? UpdateWithUserResponse(
       userId,
-      QuizGroupKeyReact.toQgKey(qia.quizGroupKey),
-      qia.prompt,
-      qia.correctResponse,
-      qia.isCorrect
+      QuizGroupKeyReact.toQgKey(qir.quizGroupKey),
+      QuizItemResponse(qir.prompt, qir.response, qir.correctResponse)
     )).mapTo[Boolean]
   }
 
